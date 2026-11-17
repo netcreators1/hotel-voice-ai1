@@ -176,7 +176,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="1.2" executionTimeout="6">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="10">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
@@ -252,7 +252,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="1.2" executionTimeout="6">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="10">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
