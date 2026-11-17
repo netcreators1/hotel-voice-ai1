@@ -832,11 +832,19 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastAssistantMsg.includes("say yes") || 
     lastAssistantMsg.includes("reservation at vivaant") ||
     lastAssistantMsg.includes("igatpuri") ||
+    lastAssistantMsg.includes("इगतपुरी") ||
+    lastAssistantMsg.includes("विवांत") ||
+    lastAssistantMsg.includes("हाँ कहें") ||
+    lastAssistantMsg.includes("haan kahein") ||
+    lastAssistantMsg.includes("kahiye haan") ||
     lastAssistantMsg.includes("if yes, then say yes") ||
     lastAssistantMsg.includes("if yes then say yes") ||
     (activeCustomGreeting && (
       activeCustomGreeting.toLowerCase().includes("say yes") ||
       activeCustomGreeting.toLowerCase().includes("igatpuri") ||
+      activeCustomGreeting.includes("इगतपुरी") ||
+      activeCustomGreeting.includes("विवांत") ||
+      activeCustomGreeting.includes("हाँ कहें") ||
       activeCustomGreeting.toLowerCase().includes("reservation at vivaant")
     ));
 
@@ -847,14 +855,19 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg === "haan" || 
     lastUserMsg === "ha" || 
     lastUserMsg === "haan ji" || 
+    lastUserMsg === "ha ji" || 
+    lastUserMsg === "हाँ" || 
+    lastUserMsg === "हाँ जी" || 
     lastUserMsg === "yes please" || 
     lastUserMsg === "sure" || 
     lastUserMsg === "ok" || 
     lastUserMsg === "okay" || 
     lastUserMsg.startsWith("yes") || 
     lastUserMsg.startsWith("haan") ||
+    lastUserMsg.startsWith("हाँ") ||
     lastUserMsg.includes("yes") ||
-    lastUserMsg.includes("haan");
+    lastUserMsg.includes("haan") ||
+    lastUserMsg.includes("हाँ");
 
   const isNegativeNo =
     isExitStatement ||
@@ -863,11 +876,15 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg === "nah" ||
     lastUserMsg === "nope" ||
     lastUserMsg === "no thanks" ||
+    lastUserMsg === "नहीं" ||
+    lastUserMsg === "नहीं जी" ||
     lastUserMsg.startsWith("no ") ||
     lastUserMsg.startsWith("nahi ") ||
+    lastUserMsg.startsWith("नहीं") ||
     lastUserMsg.includes("no") ||
     lastUserMsg.includes("nahi") ||
-    lastUserMsg.includes("nah");
+    lastUserMsg.includes("nah") ||
+    lastUserMsg.includes("नहीं");
 
   if (wasPromptedSayYes) {
     if (wantsHindi || isLanguageSwitchToHindi) {
