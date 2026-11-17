@@ -311,6 +311,16 @@ router.all("/vobiz/gather", async (req, res) => {
 
     console.log(`[Vobiz Live Speech] Caller said: "${userSpeech}" for Call ID: ${callId}, payload:`, JSON.stringify(req.body || req.query));
 
+    // Non-blocking real-time event log in Firebase
+    if (callId) {
+      update(ref(db, `calls/${callId}/gather_events/${Date.now()}`), {
+        speech: userSpeech,
+        body: req.body || {},
+        query: req.query || {},
+        timestamp: Date.now()
+      }).catch(() => {});
+    }
+
     // Zero-latency memory lookup: no blocking Firebase roundtrip
     let callData = activeCalls.get(callId);
     const customerPhone = extractCustomerPhone(req, callData);
@@ -353,7 +363,7 @@ router.all("/vobiz/gather", async (req, res) => {
         const isHindi = (lang || "").toLowerCase() === "hi";
         const prompt = isHindi
           ? "नमस्ते! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
-          : "Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES";
+          : "Are you looking for Reservation? Say YES, or for Hindi say HINDI.";
         const xml = await vobizService.generateConversationalXML(prompt, callId, false, null, lang, customerPhone, customerName, persona);
         res.type("application/xml");
         return res.send(xml.trim());

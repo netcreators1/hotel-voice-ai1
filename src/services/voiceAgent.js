@@ -307,6 +307,7 @@ export async function processConversationStep(messages, sessionContext = {}) {
 
   // Determine language preference: check if caller wants Hindi or spoke Hindi
   const wantsHindi = 
+    lastUserMsg === "2" ||
     lastUserMsg.includes("hindi") ||
     lastUserMsg.includes("hindee") ||
     lastUserMsg.includes("हिंदी") ||
@@ -859,6 +860,7 @@ ${JSON.stringify(hotel, null, 2)}`;
     ));
 
   const isAffirmativeYes = 
+    lastUserMsg === "1" ||
     lastUserMsg === "yes" || 
     lastUserMsg === "yeah" || 
     lastUserMsg === "yep" || 

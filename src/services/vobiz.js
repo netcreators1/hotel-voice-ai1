@@ -174,7 +174,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="25">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" numDigits="1" language="en-IN" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="15">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
@@ -212,7 +212,7 @@ export class VobizService {
         preRecordedClip = "vivaant_new_yes_reply.wav";
       } else if (lowerReply.includes("have a wonderful day ahead") && isFinal) {
         preRecordedClip = "vivaant_new_no_reply.wav";
-      } else if (lowerReply.includes("say yes") || lowerReply.includes("reservation at vivaant") || lowerReply.includes("igatpuri") || lowerReply.includes("looking for reservation")) {
+      } else if ((lowerReply.includes("say yes") || lowerReply.includes("reservation at vivaant") || lowerReply.includes("igatpuri") || lowerReply.includes("looking for reservation")) && !lowerReply.includes("for hindi")) {
         preRecordedClip = "vivaant_new_greeting.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("tariffs") || lowerReply.includes("suite")) {
         preRecordedClip = "en_tariffs.wav";
@@ -254,7 +254,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="25">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" numDigits="1" language="en-IN" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="15">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
