@@ -192,7 +192,7 @@ export const AGENT_PERSONAS = {
     role: "Reservation Specialist",
     title: "Reservation Specialist (Luxury & Bookings)",
     tone: "Lively, warm, polite, and energetic young Indian voice",
-    voice: "Polly.Aditi",
+    voice: "Polly.Kajal",
     generateGreeting: (hotelName, guestName, lang = "en") => {
       const hName = hotelName || "Vivaant Retreat";
       const isHindi = (lang || "").toLowerCase() === "hi";
@@ -217,7 +217,7 @@ export const AGENT_PERSONAS = {
     role: "Corporate & Banquet Concierge",
     title: "Corporate & Banquet Concierge (MICE & Events)",
     tone: "Executive, crisp, and professional",
-    voice: "Polly.Aditi",
+    voice: "Polly.Kajal",
     generateGreeting: (hotelName, guestName, lang = "en") => {
       const hName = hotelName || "Vivaant Retreat";
       const isHindi = (lang || "").toLowerCase() === "hi";
@@ -242,7 +242,7 @@ export const AGENT_PERSONAS = {
     role: "VIP Guest Experience Manager",
     title: "VIP Guest Relations (Dining, Spa & Transfers)",
     tone: "Lively, attentive, courteous, and hospitable young voice",
-    voice: "Polly.Aditi",
+    voice: "Polly.Kajal",
     generateGreeting: (hotelName, guestName, lang = "en") => {
       const hName = hotelName || "Vivaant Retreat";
       const isHindi = (lang || "").toLowerCase() === "hi";
@@ -267,7 +267,7 @@ export const AGENT_PERSONAS = {
     role: "Promotions & Offers Specialist",
     title: "Promotions Specialist (Deals & Weekend Offers)",
     tone: "Dynamic, persuasive, and enthusiastic",
-    voice: "Polly.Aditi",
+    voice: "Polly.Kajal",
     generateGreeting: (hotelName, guestName, lang = "en") => {
       const hName = hotelName || "Vivaant Retreat";
       const isHindi = (lang || "").toLowerCase() === "hi";

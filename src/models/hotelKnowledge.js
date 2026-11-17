@@ -57,7 +57,7 @@ export const defaultHotelConfig = {
 
 export const defaultAgentScript = {
   custom_greeting_en: "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES",
-  custom_greeting_hi: "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES",
+  custom_greeting_hi: "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।",
   custom_script: "",
   updated_at: Date.now()
 };

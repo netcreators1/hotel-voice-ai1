@@ -148,30 +148,35 @@ export class VobizService {
         ? "Namaste! Vivaant Retreat se Aayla. Main aapki kya sahayata kar sakti hoon?"
         : "Namaste! I am Aayla from Vivaant Retreat. How may I assist your booking today?";
     }
-    const voice = personaObj.voice || "Polly.Aditi";
+    const voice = isHindi ? "Polly.Kajal" : (personaObj.voice || "Polly.Kajal");
+    const langAttr = isHindi ? ' language="hi-IN"' : ' language="en-IN"';
 
-    // High-quality natural Indian voice (Sarvam Bulbul `simran` pre-cached on disk for 0ms delay)
-    let audioTag = `<Speak voice="${voice}">${greetingText}</Speak>`;
-    if (greetingText.includes("say YES") || greetingText.includes("say yes") || greetingText.includes("Igatpuri")) {
-      const diskNewGreeting = path.resolve("public/audio", "vivaant_new_greeting.wav");
-      if (fs.existsSync(diskNewGreeting)) {
-        audioTag = `<Play>${publicUrl}/api/telephony/audio/vivaant_new_greeting.wav</Play>`;
+    // High-quality natural neural voice
+    let audioTag = `<Speak voice="${voice}"${langAttr}>${greetingText}</Speak>`;
+    if (!isHindi) {
+      if (greetingText.includes("say YES") || greetingText.includes("say yes") || greetingText.includes("Igatpuri")) {
+        const diskNewGreeting = path.resolve("public/audio", "vivaant_new_greeting.wav");
+        if (fs.existsSync(diskNewGreeting)) {
+          audioTag = `<Play>${publicUrl}/api/telephony/audio/vivaant_new_greeting.wav</Play>`;
+        }
       }
     } else {
       const isAvinash = (guestName || "").toLowerCase().includes("avinash");
-      const preRecordedGreeting = isHindi 
-        ? (isAvinash ? "hi_greeting_avinash.wav" : "hi_greeting_generic.wav")
-        : "en_greeting.wav";
-
+      const preRecordedGreeting = isAvinash ? "hi_greeting_avinash.mp3" : "hi_vivaant_greeting.mp3";
       const diskGreetingPath = path.resolve("public/audio", preRecordedGreeting);
       if (fs.existsSync(diskGreetingPath)) {
         audioTag = `<Play>${publicUrl}/api/telephony/audio/${preRecordedGreeting}</Play>`;
+      } else {
+        const fallbackWav = isAvinash ? "hi_greeting_avinash.wav" : "hi_greeting_generic.wav";
+        if (fs.existsSync(path.resolve("public/audio", fallbackWav))) {
+          audioTag = `<Play>${publicUrl}/api/telephony/audio/${fallbackWav}</Play>`;
+        }
       }
     }
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="en-IN" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="8">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="8">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
@@ -179,7 +184,7 @@ export class VobizService {
   }
 
   /**
-   * Conversational turn XML: speaks the AI reply with Sarvam Bulbul TTS or Polly.Aditi
+   * Conversational turn XML: speaks the AI reply with Polly.Kajal Neural voice or pre-recorded studio audio
    * and listens for the next guest input.
    */
   async generateConversationalXML(replyText, callId, isFinal = false, customUrl = null, lang = "en", customerPhone = "", customerName = "", persona = "aayla") {
@@ -196,25 +201,38 @@ export class VobizService {
         ? "Ji, main aapki kya sahayata kar sakti hoon?"
         : "How may I assist you with your booking today?";
     }
-    const voice = personaObj.voice || "Polly.Aditi";
+    const voice = isHindi ? "Polly.Kajal" : (personaObj.voice || "Polly.Kajal");
+    const langAttr = isHindi ? ' language="hi-IN"' : ' language="en-IN"';
 
-    // High-quality natural Indian voice (Sarvam Bulbul `simran` pre-cached on disk for 0ms delay)
-    let audioTag = `<Speak voice="${voice}">${formattedSpeech}</Speak>`;
+    // High-quality natural neural voice
+    let audioTag = `<Speak voice="${voice}"${langAttr}>${formattedSpeech}</Speak>`;
     const lowerReply = formattedSpeech.toLowerCase();
 
     let preRecordedClip = null;
-    if (lowerReply.includes("shall get back to you") || lowerReply.includes("get back to you") || lowerReply.includes("thank you very much") || (lowerReply.includes("thank you") && isFinal)) {
-      preRecordedClip = "vivaant_new_yes_reply.wav";
-    } else if (lowerReply.includes("have a wonderful day ahead") && isFinal) {
-      preRecordedClip = "vivaant_new_no_reply.wav";
-    } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("tariffs") || lowerReply.includes("suite")) {
-      preRecordedClip = isHindi ? "hi_tariffs.wav" : "en_tariffs.wav";
-    } else if (lowerReply.includes("bhej diya") || lowerReply.includes("sent the booking link") || lowerReply.includes("sent the direct booking link")) {
-      preRecordedClip = isHindi ? "hi_link_sent.wav" : "en_link_sent.wav";
-    } else if (!lowerReply.includes("sampark") && (lowerReply.includes("din shubh") || lowerReply.includes("wonderful day"))) {
-      preRecordedClip = isHindi ? "hi_goodbye.wav" : "en_goodbye.wav";
-    } else if (lowerReply.includes("swagat") || lowerReply.includes("kisi aur cheez") || lowerReply.includes("anything else")) {
-      preRecordedClip = isHindi ? "hi_anything_else.wav" : "en_link_sent.wav";
+    if (!isHindi) {
+      if (lowerReply.includes("shall get back to you") || lowerReply.includes("get back to you") || lowerReply.includes("thank you very much") || (lowerReply.includes("thank you") && isFinal)) {
+        preRecordedClip = "vivaant_new_yes_reply.wav";
+      } else if (lowerReply.includes("have a wonderful day ahead") && isFinal) {
+        preRecordedClip = "vivaant_new_no_reply.wav";
+      } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("tariffs") || lowerReply.includes("suite")) {
+        preRecordedClip = "en_tariffs.wav";
+      } else if (lowerReply.includes("sent the booking link") || lowerReply.includes("sent the direct booking link")) {
+        preRecordedClip = "en_link_sent.wav";
+      } else if (lowerReply.includes("wonderful day")) {
+        preRecordedClip = "en_goodbye.wav";
+      }
+    } else {
+      if (lowerReply.includes("sampark") || lowerReply.includes("jald hi") || (lowerReply.includes("dhanyavaad") && !lowerReply.includes("din shubh"))) {
+        preRecordedClip = "hi_vivaant_yes_reply.mp3";
+      } else if (lowerReply.includes("dhanyavaad") && (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || isFinal)) {
+        preRecordedClip = "hi_goodbye.wav";
+      } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("kamre")) {
+        preRecordedClip = "hi_tariffs.wav";
+      } else if (lowerReply.includes("bhej diya") || lowerReply.includes("link bhej")) {
+        preRecordedClip = "hi_link_sent.wav";
+      } else if (lowerReply.includes("swagat") || lowerReply.includes("sahayata")) {
+        preRecordedClip = "hi_anything_else.wav";
+      }
     }
 
     if (preRecordedClip && fs.existsSync(path.resolve("public/audio", preRecordedClip))) {

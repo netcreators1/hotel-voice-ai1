@@ -22,13 +22,17 @@ const activeCalls = new Map();
  */
 router.get("/audio/:filename", (req, res) => {
   const { filename } = req.params;
-  const cleanName = filename.endsWith(".wav") ? filename : `${filename}.wav`;
+  let cleanName = filename;
+  if (!cleanName.includes(".")) {
+    cleanName = `${filename}.wav`;
+  }
   const diskPath = path.resolve("public/audio", cleanName);
 
   if (fs.existsSync(diskPath)) {
     const stats = fs.statSync(diskPath);
+    const contentType = cleanName.endsWith(".mp3") ? "audio/mpeg" : "audio/wav";
     res.set({
-      "Content-Type": "audio/wav",
+      "Content-Type": contentType,
       "Content-Length": stats.size,
       "Cache-Control": "public, max-age=86400",
       "Accept-Ranges": "bytes"

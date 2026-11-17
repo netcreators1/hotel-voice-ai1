@@ -7,8 +7,9 @@ Vapi.ai
 https://console.vobiz.ai/app/wallet
 netcreators@gmail.com
 
-hosted on - fly.io
-Wpdyns7665
+hosted on - render.com
+
+GitHub URL : https://github.com/netcreators1/hotel-voice-ai1
 
 Oracle
 
