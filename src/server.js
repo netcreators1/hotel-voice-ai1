@@ -48,8 +48,8 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Cloud Keep-Alive Heartbeat: Pings public endpoint every 3 minutes to keep Fly.io machine permanently warm
-const KEEP_ALIVE_URL = process.env.PUBLIC_URL || "https://hotel-voice-ai.fly.dev";
+// Cloud Keep-Alive Heartbeat: Pings public endpoint every 3 minutes to keep server permanently warm
+const KEEP_ALIVE_URL = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_URL || "https://hotel-voice-ai-hmzj.onrender.com";
 setInterval(() => {
   fetch(`${KEEP_ALIVE_URL}/health`).catch(() => {});
 }, 180000);

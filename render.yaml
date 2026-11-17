@@ -9,6 +9,8 @@ services:
     envVars:
       - key: PORT
         value: 5050
+      - key: PUBLIC_URL
+        value: https://hotel-voice-ai-hmzj.onrender.com
       - key: TELEPHONY_PROVIDER
         value: vobiz
       - key: FIREBASE_API_KEY

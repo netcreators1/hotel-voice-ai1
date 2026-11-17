@@ -14,13 +14,16 @@ function getPublicUrl(customUrl = null) {
   if (customUrl && customUrl.startsWith("https://") && !customUrl.includes("localhost") && !customUrl.includes("127.0.0.1") && !customUrl.includes("trycloudflare.com")) {
     return customUrl;
   }
+  if (process.env.RENDER_EXTERNAL_URL && process.env.RENDER_EXTERNAL_URL.startsWith("https://")) {
+    return process.env.RENDER_EXTERNAL_URL;
+  }
   if (process.env.PUBLIC_URL && process.env.PUBLIC_URL.startsWith("https://") && !process.env.PUBLIC_URL.includes("localhost") && !process.env.PUBLIC_URL.includes("trycloudflare.com")) {
     return process.env.PUBLIC_URL;
   }
   if (process.env.FLY_APP_NAME) {
     return `https://${process.env.FLY_APP_NAME}.fly.dev`;
   }
-  return "https://hotel-voice-ai.fly.dev";
+  return "https://hotel-voice-ai-hmzj.onrender.com";
 }
 
 function cleanVoiceSpeech(text, isHindi = false) {
