@@ -174,10 +174,9 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <GetInput action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" speechModel="command_and_search" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="25">
+    <GetInput action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="25" redirect="true">
         ${audioTag}
     </GetInput>
-    <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }
 
@@ -254,10 +253,9 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <GetInput action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" speechModel="command_and_search" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="25">
+    <GetInput action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="25" redirect="true">
         ${audioTag}
     </GetInput>
-    <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }
 }
