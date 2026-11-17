@@ -317,14 +317,29 @@ router.all("/vobiz/gather", async (req, res) => {
 
     const history = callData?.history || [];
 
-    // If silence or empty speech from Vobiz, conclude courteously and hang up immediately
+    // If silence or empty speech from Vobiz, re-prompt without hanging up prematurely
     if (!userSpeech) {
-      console.log(`[Vobiz] Silence or unrecognized speech on call ${callId}, concluding call courteously...`);
-      const prompt = "Thank you very much and we shall get back to you.";
-      const xml = await vobizService.generateConversationalXML(prompt, callId, true, null, lang, customerPhone, customerName, persona);
-      res.type("application/xml");
-      return res.send(xml.trim());
+      callData.silenceCount = (callData.silenceCount || 0) + 1;
+      console.log(`[Vobiz] Silence or timeout on call ${callId}, silence count: ${callData.silenceCount}`);
+      if (callData.silenceCount < 3) {
+        const isHindi = (lang || "").toLowerCase() === "hi";
+        const prompt = isHindi
+          ? "नमस्ते! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
+          : "Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES";
+        const xml = await vobizService.generateConversationalXML(prompt, callId, false, null, lang, customerPhone, customerName, persona);
+        res.type("application/xml");
+        return res.send(xml.trim());
+      } else {
+        const isHindi = (lang || "").toLowerCase() === "hi";
+        const prompt = isHindi
+          ? "विवांत रिट्रीट में कॉल करने के लिए धन्यवाद। आपका दिन शुभ हो!"
+          : "Thank you for contacting Vivaant Retreat. Have a wonderful day ahead!";
+        const xml = await vobizService.generateConversationalXML(prompt, callId, true, null, lang, customerPhone, customerName, persona);
+        res.type("application/xml");
+        return res.send(xml.trim());
+      }
     }
+    callData.silenceCount = 0;
 
     history.push({ role: "user", content: userSpeech });
 
