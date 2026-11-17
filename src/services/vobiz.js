@@ -154,11 +154,9 @@ export class VobizService {
     // High-quality natural neural voice
     let audioTag = `<Speak voice="${voice}"${langAttr}>${greetingText}</Speak>`;
     if (!isHindi) {
-      if (greetingText.includes("say YES") || greetingText.includes("say yes") || greetingText.includes("Igatpuri")) {
-        const diskNewGreeting = path.resolve("public/audio", "vivaant_new_greeting.wav");
-        if (fs.existsSync(diskNewGreeting)) {
-          audioTag = `<Play>${publicUrl}/api/telephony/audio/vivaant_new_greeting.wav</Play>`;
-        }
+      const diskNewGreeting = path.resolve("public/audio", "vivaant_new_greeting.wav");
+      if (fs.existsSync(diskNewGreeting)) {
+        audioTag = `<Play>${publicUrl}/api/telephony/audio/vivaant_new_greeting.wav</Play>`;
       }
     } else {
       const isAvinash = (guestName || "").toLowerCase().includes("avinash");
