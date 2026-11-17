@@ -176,7 +176,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="8">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="1.2" executionTimeout="6">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
@@ -222,7 +222,10 @@ export class VobizService {
         preRecordedClip = "en_goodbye.wav";
       }
     } else {
-      if (lowerReply.includes("sampark") || lowerReply.includes("jald hi") || (lowerReply.includes("dhanyavaad") && !lowerReply.includes("din shubh"))) {
+      const isAvinash = (customerName || "").toLowerCase().includes("avinash");
+      if (lowerReply.includes("reservation") || lowerReply.includes("रिज़र्वेशन") || lowerReply.includes("karna chahte") || lowerReply.includes("चाहते हैं") || lowerReply.includes("boliye haan") || lowerReply.includes("हाँ कहें") || lowerReply.includes("se aayla") || lowerReply.includes("आयला")) {
+        preRecordedClip = isAvinash ? "hi_greeting_avinash.mp3" : "hi_vivaant_greeting.mp3";
+      } else if (lowerReply.includes("sampark") || lowerReply.includes("jald hi") || (lowerReply.includes("dhanyavaad") && !lowerReply.includes("din shubh"))) {
         preRecordedClip = "hi_vivaant_yes_reply.mp3";
       } else if (lowerReply.includes("dhanyavaad") && (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || isFinal)) {
         preRecordedClip = "hi_goodbye.wav";
@@ -249,7 +252,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="en-IN" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="8">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${isHindi ? "hi-IN" : "en-IN"}" bargeIn="true" hints="YES, NO, haan, nahi, hindi, speak in hindi, hindi mein, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="1.2" executionTimeout="6">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>

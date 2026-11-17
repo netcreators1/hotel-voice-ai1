@@ -888,7 +888,7 @@ ${JSON.stringify(hotel, null, 2)}`;
 
   if (wasPromptedSayYes) {
     if (wantsHindi || isLanguageSwitchToHindi) {
-      reply = "Ji bilkul! Kya aap Vivaant Retreat Igatpuri mein reservation dekh rahe hain? Agar haan, toh boliye HAAN.";
+      reply = "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
       isFinal = false;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
     } else if (isAffirmativeYes) {
@@ -909,9 +909,15 @@ ${JSON.stringify(hotel, null, 2)}`;
         : "Thank you very much and we shall get back to you.";
       isFinal = true;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
-    } else if (lastUserMsg.includes("repeat") || lastUserMsg.includes("fir se") || lastUserMsg.includes("kya bola") || lastUserMsg.includes("pardon") || lastUserMsg.includes("again") || lastUserMsg === "hello") {
+    } else if (isAudioCheck || lastUserMsg.includes("repeat") || lastUserMsg.includes("fir se") || lastUserMsg.includes("kya bola") || lastUserMsg.includes("pardon") || lastUserMsg.includes("again") || lastUserMsg === "hello" || lastUserMsg.includes("hear me") || lastUserMsg.includes("aawaz") || lastUserMsg.includes("awaz") || lastUserMsg.includes("speaking")) {
       reply = isHindi
-        ? "Namaste! Main Vivaant Retreat Igatpuri se Aayla. Kya aap reservation dekh rahe hain? Agar haan, toh boliye HAAN."
+        ? "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
+        : (activeCustomGreeting || "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES");
+      isFinal = false;
+    } else if (userMsgCount <= 2) {
+      // Repeat the triage prompt if guest says something other than yes/no on the first try
+      reply = isHindi
+        ? "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
         : (activeCustomGreeting || "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES");
       isFinal = false;
     } else {
@@ -926,8 +932,10 @@ ${JSON.stringify(hotel, null, 2)}`;
     reply = "Thank you very much and we shall get back to you.";
     isFinal = true;
     executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
-  } else if (isLanguageSwitchToHindi) {
-    reply = `Ji bilkul! Main aapse Hindi mein hi baat karungi. Vivaant Retreat mein aapka swagat hai! Hamare Deluxe room ${deluxeRate} Rupees aur Executive Suite ${execRate} Rupees se shuru hote hain. Aaj main aapki room reservation ya stay mein kis prakaar sahayata kar sakti hoon?`;
+  } else if (isLanguageSwitchToHindi || wantsHindi) {
+    reply = "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
+    isFinal = false;
+    executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
     executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
   } else if (isLanguageSwitchToEnglish) {
     reply = `Certainly! I will gladly speak with you in English. Welcome to Vivaant Retreat! Our Deluxe rooms start at Rupees ${deluxeRate} plus taxes. How may I assist your stay or room reservation today?`;
