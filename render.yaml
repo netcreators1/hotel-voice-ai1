@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: hotel-voice-ai
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: node src/server.js
+    envVars:
+      - key: PORT
+        value: 5050
+      - key: TELEPHONY_PROVIDER
+        value: vobiz
+      - key: FIREBASE_API_KEY
+        value: AIzaSyCNl_YP2tcghZqP2yBAHK0K4_8_ZDpoEw0
+      - key: FIREBASE_AUTH_DOMAIN
+        value: telecalling-3bd3e.firebaseapp.com
+      - key: FIREBASE_DATABASE_URL
+        value: https://telecalling-3bd3e-default-rtdb.firebaseio.com
+      - key: FIREBASE_PROJECT_ID
+        value: telecalling-3bd3e
+      - key: FIREBASE_STORAGE_BUCKET
+        value: telecalling-3bd3e.firebasestorage.app
+      - key: FIREBASE_MESSAGING_SENDER_ID
+        value: "321194721438"
+      - key: FIREBASE_APP_ID
+        value: 1:321194721438:web:30860ec71955fd5ea5fb8f
+      - key: VOBIZ_AUTH_ID
+        value: MA_UQ3I13SF
+      - key: VOBIZ_AUTH_SECRET
+        value: GpkMfgbwbCSO0CZZJeA9E2jARLRuOq0jJ3Pj55wo3BfFIDrRtJfU9btQ4XG9m1V2
+      - key: VOBIZ_SIP_DOMAIN
+        value: MA_UQ3I13SF.sip.vobiz.ai
+      - key: VOBIZ_SIP_USERNAME
+        value: hotel_aria_agent
+      - key: VOBIZ_SIP_PASSWORD
+        value: AriaHotelSecure2026!
+      - key: VOBIZ_PHONE_NUMBER
+        value: "+918064260572"
+      - key: SARVAM_API_KEY
+        value: sk_a0a19tls_ms9Cjnxf1JVqfRrtKdfTpd3C
+      - key: SARVAM_SAMVAAD_API_KEY
+        value: sk_samvaad_9ftdufex_vNECuTAEF1AlilEgjPloy0Ss
+      - key: AI_PROVIDER
+        value: openai
