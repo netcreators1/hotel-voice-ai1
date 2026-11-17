@@ -17,7 +17,21 @@ const router = express.Router();
 const activeCalls = new Map();
 
 /**
- * Serve dynamically synthesized audio clips (e.g. Sarvam AI Bulbul TTS)
+ * In-memory audio cache for zero-latency telephony playback streaming
+ */
+const audioMemoryCache = new Map();
+const audioDir = path.resolve("public/audio");
+if (fs.existsSync(audioDir)) {
+  for (const file of fs.readdirSync(audioDir)) {
+    if (file.endsWith(".wav") || file.endsWith(".mp3")) {
+      audioMemoryCache.set(file, fs.readFileSync(path.join(audioDir, file)));
+    }
+  }
+  console.log(`[AudioCache] Preloaded ${audioMemoryCache.size} telephony audio clips directly into RAM.`);
+}
+
+/**
+ * Serve dynamically synthesized audio clips (instant zero-latency from RAM cache)
  * GET /api/telephony/audio/:filename
  */
 router.get("/audio/:filename", (req, res) => {
@@ -26,18 +40,32 @@ router.get("/audio/:filename", (req, res) => {
   if (!cleanName.includes(".")) {
     cleanName = `${filename}.wav`;
   }
-  const diskPath = path.resolve("public/audio", cleanName);
-
-  if (fs.existsSync(diskPath)) {
-    const stats = fs.statSync(diskPath);
+  
+  if (audioMemoryCache.has(cleanName)) {
+    const buf = audioMemoryCache.get(cleanName);
     const contentType = cleanName.endsWith(".mp3") ? "audio/mpeg" : "audio/wav";
     res.set({
       "Content-Type": contentType,
-      "Content-Length": stats.size,
-      "Cache-Control": "public, max-age=86400",
+      "Content-Length": buf.length,
+      "Cache-Control": "public, max-age=86400, immutable",
       "Accept-Ranges": "bytes"
     });
-    return fs.createReadStream(diskPath).pipe(res);
+    return res.end(buf);
+  }
+
+  const diskPath = path.resolve("public/audio", cleanName);
+
+  if (fs.existsSync(diskPath)) {
+    const buf = fs.readFileSync(diskPath);
+    audioMemoryCache.set(cleanName, buf);
+    const contentType = cleanName.endsWith(".mp3") ? "audio/mpeg" : "audio/wav";
+    res.set({
+      "Content-Type": contentType,
+      "Content-Length": buf.length,
+      "Cache-Control": "public, max-age=86400, immutable",
+      "Accept-Ranges": "bytes"
+    });
+    return res.end(buf);
   }
 
   const audioData = sarvamService.getAudioBuffer(filename);

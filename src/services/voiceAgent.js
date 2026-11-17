@@ -888,7 +888,7 @@ ${JSON.stringify(hotel, null, 2)}`;
 
   if (wasPromptedSayYes) {
     if (wantsHindi || isLanguageSwitchToHindi) {
-      reply = "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
+      reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
       isFinal = false;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
     } else if (isAffirmativeYes) {
@@ -933,9 +933,8 @@ ${JSON.stringify(hotel, null, 2)}`;
     isFinal = true;
     executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
   } else if (isLanguageSwitchToHindi || wantsHindi) {
-    reply = "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
+    reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
     isFinal = false;
-    executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
     executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
   } else if (isLanguageSwitchToEnglish) {
     reply = `Certainly! I will gladly speak with you in English. Welcome to Vivaant Retreat! Our Deluxe rooms start at Rupees ${deluxeRate} plus taxes. How may I assist your stay or room reservation today?`;
