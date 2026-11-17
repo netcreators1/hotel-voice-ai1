@@ -159,7 +159,7 @@ export class VobizService {
         audioTag = `<Play>${publicUrl}/api/telephony/audio/vivaant_new_greeting.wav</Play>`;
       }
     } else {
-      const isAvinash = (guestName || "").toLowerCase().includes("avinash");
+      const isAvinash = (guestName || "").toLowerCase().includes("avinash") || (customerPhone || "").includes("9167584555");
       const preRecordedGreeting = isAvinash ? "hi_greeting_avinash.wav" : "hi_vivaant_greeting.wav";
       const diskGreetingPath = path.resolve("public/audio", preRecordedGreeting);
       if (fs.existsSync(diskGreetingPath)) {
@@ -174,9 +174,9 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" bargeIn="true" hints="hindi, hindi mein, speak in hindi, bolie, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="25">
+    <GetInput action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" speechModel="command_and_search" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="25">
         ${audioTag}
-    </Gather>
+    </GetInput>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }
@@ -222,7 +222,7 @@ export class VobizService {
         preRecordedClip = "en_goodbye.wav";
       }
     } else {
-      const isAvinash = (customerName || "").toLowerCase().includes("avinash");
+      const isAvinash = (customerName || "").toLowerCase().includes("avinash") || (customerPhone || "").includes("9167584555");
       if (lowerReply.includes("ji bilkul") || lowerReply.includes("जी बिल्कुल")) {
         preRecordedClip = "hi_switch_immediate.wav";
       } else if (lowerReply.includes("reservation") || lowerReply.includes("रिज़र्वेशन") || lowerReply.includes("karna chahte") || lowerReply.includes("चाहते हैं") || lowerReply.includes("boliye haan") || lowerReply.includes("हाँ कहें") || lowerReply.includes("se aayla") || lowerReply.includes("आयला")) {
@@ -254,9 +254,9 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" bargeIn="true" hints="hindi, hindi mein, speak in hindi, bolie, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="2" executionTimeout="25">
+    <GetInput action="${xmlGatherAction}" method="POST" inputType="speech" language="en-IN" speechModel="command_and_search" hints="hindi, hindi mein, speak in hindi, hindi boliye, haan, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate" speechEndTimeout="auto" executionTimeout="25">
         ${audioTag}
-    </Gather>
+    </GetInput>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }

@@ -308,17 +308,27 @@ export async function processConversationStep(messages, sessionContext = {}) {
   // Determine language preference: check if caller wants Hindi or spoke Hindi
   const wantsHindi = 
     lastUserMsg.includes("hindi") ||
+    lastUserMsg.includes("hindee") ||
     lastUserMsg.includes("हिंदी") ||
     lastUserMsg.includes("हिन्दी") ||
     lastUserMsg.includes("talk in hindi") ||
     lastUserMsg.includes("speak in hindi") ||
+    lastUserMsg.includes("speak hindi") ||
     lastUserMsg.includes("can you speak hindi") ||
     lastUserMsg.includes("do you speak hindi") ||
     lastUserMsg.includes("hindi please") ||
+    lastUserMsg.includes("please hindi") ||
     lastUserMsg.includes("hindi mein") ||
     lastUserMsg.includes("hindi me") ||
     lastUserMsg.includes("hindi bolo") ||
+    lastUserMsg.includes("hindi boliye") ||
+    lastUserMsg.includes("hindi bolie") ||
+    lastUserMsg.includes("hindi batao") ||
+    lastUserMsg.includes("hindi me baat") ||
+    lastUserMsg.includes("hindi mein baat") ||
     lastUserMsg.includes("english nahi") ||
+    lastUserMsg.includes("angrezi nahi") ||
+    lastUserMsg.includes("angreji nahi") ||
     lastUserMsg.includes("english samajh") ||
     lastUserMsg.includes("nahi aati") ||
     lastUserMsg.includes("hindi aati hai");
@@ -928,14 +938,14 @@ ${JSON.stringify(hotel, null, 2)}`;
       isFinal = true;
       executeTool("log_guest_interest", { interest_level: "warm", intent: `Reservation Inquiry (${lastUserRaw.slice(0, 40)})` }, sessionContext).catch(() => {});
     }
-  } else if (isThankYou) {
-    reply = "Thank you very much and we shall get back to you.";
-    isFinal = true;
-    executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
   } else if (isLanguageSwitchToHindi || wantsHindi) {
     reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
     isFinal = false;
     executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
+  } else if (isThankYou) {
+    reply = "Thank you very much and we shall get back to you.";
+    isFinal = true;
+    executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
   } else if (isLanguageSwitchToEnglish) {
     reply = `Certainly! I will gladly speak with you in English. Welcome to Vivaant Retreat! Our Deluxe rooms start at Rupees ${deluxeRate} plus taxes. How may I assist your stay or room reservation today?`;
     executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested English language" }, sessionContext).catch(() => {});
