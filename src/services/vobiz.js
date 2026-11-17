@@ -160,7 +160,7 @@ export class VobizService {
       }
     } else {
       const isAvinash = (guestName || "").toLowerCase().includes("avinash");
-      const preRecordedGreeting = isAvinash ? "hi_greeting_avinash.mp3" : "hi_vivaant_greeting.mp3";
+      const preRecordedGreeting = isAvinash ? "hi_greeting_avinash.wav" : "hi_vivaant_greeting.wav";
       const diskGreetingPath = path.resolve("public/audio", preRecordedGreeting);
       if (fs.existsSync(diskGreetingPath)) {
         audioTag = `<Play>${publicUrl}/api/telephony/audio/${preRecordedGreeting}</Play>`;
@@ -212,6 +212,8 @@ export class VobizService {
         preRecordedClip = "vivaant_new_yes_reply.wav";
       } else if (lowerReply.includes("have a wonderful day ahead") && isFinal) {
         preRecordedClip = "vivaant_new_no_reply.wav";
+      } else if (lowerReply.includes("say yes") || lowerReply.includes("reservation at vivaant") || lowerReply.includes("igatpuri") || lowerReply.includes("looking for reservation")) {
+        preRecordedClip = "vivaant_new_greeting.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("tariffs") || lowerReply.includes("suite")) {
         preRecordedClip = "en_tariffs.wav";
       } else if (lowerReply.includes("sent the booking link") || lowerReply.includes("sent the direct booking link")) {
@@ -222,9 +224,9 @@ export class VobizService {
     } else {
       const isAvinash = (customerName || "").toLowerCase().includes("avinash");
       if (lowerReply.includes("reservation") || lowerReply.includes("रिज़र्वेशन") || lowerReply.includes("karna chahte") || lowerReply.includes("चाहते हैं") || lowerReply.includes("boliye haan") || lowerReply.includes("हाँ कहें") || lowerReply.includes("se aayla") || lowerReply.includes("आयला")) {
-        preRecordedClip = isAvinash ? "hi_greeting_avinash.mp3" : "hi_vivaant_greeting.mp3";
+        preRecordedClip = isAvinash ? "hi_greeting_avinash.wav" : "hi_vivaant_greeting.wav";
       } else if (lowerReply.includes("sampark") || lowerReply.includes("jald hi") || (lowerReply.includes("dhanyavaad") && !lowerReply.includes("din shubh"))) {
-        preRecordedClip = "hi_vivaant_yes_reply.mp3";
+        preRecordedClip = "hi_vivaant_yes_reply.wav";
       } else if (lowerReply.includes("dhanyavaad") && (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || isFinal)) {
         preRecordedClip = "hi_goodbye.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("kamre")) {

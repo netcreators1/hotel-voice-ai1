@@ -20,8 +20,10 @@
     "express": "^5.3.0",
     "firebase": "^13.2.0",
     "firebase-functions": "^7.4.0",
+    "mpg123-decoder": "^1.0.3",
     "msedge-tts": "^2.1.1",
     "node-cron": "^4.6.0",
+    "wavefile": "^11.0.0",
     "ws": "^8.22.2"
   }
 }
