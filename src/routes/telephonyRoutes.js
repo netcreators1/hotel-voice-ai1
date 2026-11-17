@@ -311,14 +311,18 @@ router.all("/vobiz/gather", async (req, res) => {
 
     console.log(`[Vobiz Live Speech] Caller said: "${userSpeech}" for Call ID: ${callId}, payload:`, JSON.stringify(req.body || req.query));
 
-    // Non-blocking real-time event log in Firebase
+    // Non-blocking real-time event log in Firebase (safe serialized object)
     if (callId) {
-      update(ref(db, `calls/${callId}/gather_events/${Date.now()}`), {
-        speech: userSpeech,
-        body: req.body || {},
-        query: req.query || {},
-        timestamp: Date.now()
-      }).catch(() => {});
+      setTimeout(() => {
+        try {
+          update(ref(db, `calls/${callId}/gather_events/${Date.now()}`), {
+            speech: userSpeech,
+            body: JSON.parse(JSON.stringify(req.body || {})),
+            query: JSON.parse(JSON.stringify(req.query || {})),
+            timestamp: Date.now()
+          }).catch(() => {});
+        } catch (_) {}
+      }, 0);
     }
 
     // Zero-latency memory lookup: no blocking Firebase roundtrip
