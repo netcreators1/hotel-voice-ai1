@@ -406,11 +406,7 @@ router.all("/vobiz/gather", async (req, res) => {
                       lowerSpeech.includes("alvida");
     const xml = await vobizService.generateConversationalXML(result.reply, callId, isGoodbye, null, lang, customerPhone, customerName, persona);
 
-    // ⚡ Return XML IMMEDIATELY to FreeSWITCH (Zero Delay)
-    res.set("Content-Type", "text/xml");
-    res.send(xml.trim());
-
-    // Async background update to Firebase (non-blocking)
+    // Persist to Firebase before sending XML so CDR/hangup never races
     if (callId) {
       const updates = {
         conversation_history: history,
@@ -422,8 +418,12 @@ router.all("/vobiz/gather", async (req, res) => {
       if (result.leadStatus) updates.lead_status = result.leadStatus;
       if (result.intent) updates.intent = result.intent;
       if (result.score) updates.lead_score = result.score;
-      update(ref(db, `calls/${callId}`), updates).catch(err => console.error("[Firebase Background Write Error]:", err.message));
+      await update(ref(db, `calls/${callId}`), updates).catch(err => console.error("[Firebase Write Error]:", err.message));
     }
+
+    // ⚡ Return XML to FreeSWITCH
+    res.set("Content-Type", "text/xml");
+    res.send(xml.trim());
   } catch (err) {
     console.error("[Vobiz Gather Error]:", err);
     res.type("application/xml");
