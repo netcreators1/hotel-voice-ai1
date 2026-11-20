@@ -172,16 +172,15 @@ export class VobizService {
       }
     }
 
-    const hints = "YES, yes, haan, haa, ha, NO, nahi, hindi, speak in hindi, reservation, Igatpuri, Vivaant, booking";
+    const hints = "1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="30">
         ${audioTag}
     </Gather>
-    <Play>${publicUrl}/api/telephony/audio/hi_switch_immediate.wav</Play>
-    <Hangup/>
+    <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }
 
@@ -270,16 +269,15 @@ export class VobizService {
 </Response>`;
     }
 
-    const hints = "YES, yes, haan, haa, ha, NO, nahi, hindi, speak in hindi, reservation, Igatpuri, Vivaant, booking";
+    const hints = "1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="30">
         ${audioTag}
     </Gather>
-    <Play>${publicUrl}/api/telephony/audio/hi_goodbye.wav</Play>
-    <Hangup/>
+    <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }
 }
