@@ -935,11 +935,7 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg.includes("नहीं");
 
   if (wasPromptedSayYes) {
-    if (wantsHindi || isLanguageSwitchToHindi) {
-      reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
-      isFinal = false;
-      executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
-    } else if (isAffirmativeYes) {
+    if (isAffirmativeYes) {
       reply = isHindi 
         ? "Aapka bahut-bahut dhanyavaad, hamari team aapse jald hi sampark karegi."
         : "Thank you very much and we shall get back to you.";
@@ -951,30 +947,18 @@ ${JSON.stringify(hotel, null, 2)}`;
         : "Thank you very much and we shall get back to you.";
       isFinal = true;
       executeTool("log_guest_interest", { interest_level: "cold", intent: "Declined Reservation (Said NO / NAHI)" }, sessionContext).catch(() => {});
-    } else if (isThankYou) {
+    } else if (isThankYou && userMsgCount > 2) {
       reply = isHindi
         ? "Bahut-bahut dhanyavaad aur aapka din shubh ho."
         : "Thank you very much and we shall get back to you.";
       isFinal = true;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
-    } else if (isAudioCheck || lastUserMsg.includes("repeat") || lastUserMsg.includes("fir se") || lastUserMsg.includes("kya bola") || lastUserMsg.includes("pardon") || lastUserMsg.includes("again") || lastUserMsg === "hello" || lastUserMsg.includes("hear me") || lastUserMsg.includes("aawaz") || lastUserMsg.includes("awaz") || lastUserMsg.includes("speaking")) {
-      reply = isHindi
-        ? "नमस्ते! क्या आप विवांत रिट्रीट में रिज़र्वेशन करना चाहते हैं? कृपया हाँ या नहीं कहें।"
-        : "Are you looking for Reservation at Vivaant Retreat? Please say YES, or say NO, or say HINDI.";
-      isFinal = false;
-    } else if (userMsgCount <= 2) {
-      // Repeat the crisp triage prompt if guest says something other than yes/no on the first try (never replay full 8s greeting)
-      reply = isHindi
-        ? "नमस्ते! क्या आप विवांत रिट्रीट में रिज़र्वेशन करना चाहते हैं? कृपया हाँ या नहीं कहें।"
-        : "Are you looking for Reservation at Vivaant Retreat? Please say YES, or say NO, or say HINDI.";
-      isFinal = false;
     } else {
-      // Do not disclose room rentals. Thank the customer and close courteously.
-      reply = isHindi
-        ? "Aapka bahut-bahut dhanyavaad, hamari team aapse jald hi sampark karegi."
-        : "Thank you very much and we shall get back to you.";
-      isFinal = true;
-      executeTool("log_guest_interest", { interest_level: "warm", intent: `Reservation Inquiry (${lastUserRaw.slice(0, 40)})` }, sessionContext).catch(() => {});
+      // Step 2 & 3: Customer asked for Hindi, said "hello", "hindi mein boliye", or any utterance other than yes/no
+      // IMMEDIATELY play the Hindi Language Greeting (Step 3)!
+      reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
+      isFinal = false;
+      executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
     }
   } else if (isLanguageSwitchToHindi || wantsHindi) {
     reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";

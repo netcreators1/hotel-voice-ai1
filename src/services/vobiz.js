@@ -212,8 +212,6 @@ export class VobizService {
         preRecordedClip = "vivaant_new_yes_reply.wav";
       } else if (lowerReply.includes("have a wonderful day ahead") && isFinal) {
         preRecordedClip = "vivaant_new_no_reply.wav";
-      } else if (lowerReply.includes("namaste! i am aayla") || lowerReply.includes("namaste i am aayla") || (lowerReply.includes("say yes") && lowerReply.includes("namaste") && !lowerReply.includes("please say yes") && !lowerReply.includes("say hindi") && !lowerReply.includes("for hindi"))) {
-        preRecordedClip = "vivaant_new_greeting.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("tariffs") || lowerReply.includes("suite")) {
         preRecordedClip = "en_tariffs.wav";
       } else if (lowerReply.includes("sent the booking link") || lowerReply.includes("sent the direct booking link")) {
@@ -238,7 +236,7 @@ export class VobizService {
     }
 
     if (!preRecordedClip) {
-      preRecordedClip = isHindi ? "hi_switch_immediate.wav" : "vivaant_new_greeting.wav";
+      preRecordedClip = "hi_switch_immediate.wav";
     }
 
     if (preRecordedClip && fs.existsSync(path.resolve("public/audio", preRecordedClip))) {

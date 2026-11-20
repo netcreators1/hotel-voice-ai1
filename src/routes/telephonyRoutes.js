@@ -361,24 +361,20 @@ router.all("/vobiz/gather", async (req, res) => {
 
     const history = callData?.history || [];
 
-    // If silence or empty speech from Vobiz, re-prompt without hanging up prematurely
+    // If silence or empty speech from Vobiz, re-prompt in Hindi without hanging up prematurely
     if (!userSpeech) {
       callData.silenceCount = (callData.silenceCount || 0) + 1;
       console.log(`[Vobiz] Silence or timeout on call ${callId}, silence count: ${callData.silenceCount}`);
-      if (callData.silenceCount < 3) {
-        const isHindi = (lang || "").toLowerCase() === "hi";
-        const prompt = isHindi
-          ? "नमस्ते! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
-          : "Are you looking for Reservation? Say YES, or for Hindi say HINDI.";
-        const xml = await vobizService.generateConversationalXML(prompt, callId, false, null, lang, customerPhone, customerName, persona);
+      if (callData.silenceCount < 2) {
+        const prompt = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
+        lang = "hi";
+        if (callData) callData.language = "hi";
+        const xml = await vobizService.generateConversationalXML(prompt, callId, false, null, "hi", customerPhone, customerName, persona);
         res.set("Content-Type", "text/xml");
         return res.send(xml.trim());
       } else {
-        const isHindi = (lang || "").toLowerCase() === "hi";
-        const prompt = isHindi
-          ? "विवांत रिट्रीट में कॉल करने के लिए धन्यवाद। आपका दिन शुभ हो!"
-          : "Thank you for contacting Vivaant Retreat. Have a wonderful day ahead!";
-        const xml = await vobizService.generateConversationalXML(prompt, callId, true, null, lang, customerPhone, customerName, persona);
+        const prompt = "विवांत रिट्रीट में कॉल करने के लिए धन्यवाद। आपका दिन शुभ हो!";
+        const xml = await vobizService.generateConversationalXML(prompt, callId, true, null, "hi", customerPhone, customerName, persona);
         res.set("Content-Type", "text/xml");
         return res.send(xml.trim());
       }
