@@ -268,7 +268,7 @@ router.all("/vobiz/answer", async (req, res) => {
 
     const xml = await vobizService.generateAnswerXML(hotel.hotel_name, customerName, callId, persona, null, lang, customerPhone, customGreeting);
 
-    res.type("application/xml");
+    res.set("Content-Type", "text/xml");
     res.send(xml.trim());
   } catch (err) {
     console.error("[Vobiz Answer Error]:", err);
@@ -409,7 +409,7 @@ router.all("/vobiz/gather", async (req, res) => {
     const xml = await vobizService.generateConversationalXML(result.reply, callId, isGoodbye, null, lang, customerPhone, customerName, persona);
 
     // ⚡ Return XML IMMEDIATELY to FreeSWITCH (Zero Delay)
-    res.type("application/xml");
+    res.set("Content-Type", "text/xml");
     res.send(xml.trim());
 
     // Async background update to Firebase (non-blocking)
