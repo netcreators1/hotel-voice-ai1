@@ -172,16 +172,15 @@ export class VobizService {
       }
     }
 
-    const hints = "1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
     const hindiGatherAction = `${publicUrl}/api/telephony/vobiz/gather?call_id=${callId}${phoneParam}${nameParam}&lang=hi&persona=${persona}`.replace(/&/g, "&amp;");
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="8">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" speechEndTimeout="2" executionTimeout="8">
         ${audioTag}
     </Gather>
-    <Gather action="${hindiGatherAction}" method="POST" inputType="speech" language="hi-IN" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="8">
+    <Gather action="${hindiGatherAction}" method="POST" inputType="speech" language="hi-IN" speechEndTimeout="2" executionTimeout="8">
         <Play>${publicUrl}/api/telephony/audio/hi_switch_immediate.wav</Play>
     </Gather>
     <Play>${publicUrl}/api/telephony/audio/hi_goodbye.wav</Play>
@@ -274,16 +273,15 @@ export class VobizService {
 </Response>`;
     }
 
-    const hints = "1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
     const hindiGatherAction = `${publicUrl}/api/telephony/vobiz/gather?call_id=${callId}${phoneParam}${nameParam}&lang=hi&persona=${persona}`.replace(/&/g, "&amp;");
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="8">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" speechEndTimeout="2" executionTimeout="8">
         ${audioTag}
     </Gather>
-    <Gather action="${hindiGatherAction}" method="POST" inputType="speech" language="hi-IN" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="8">
+    <Gather action="${hindiGatherAction}" method="POST" inputType="speech" language="hi-IN" speechEndTimeout="2" executionTimeout="8">
         <Play>${publicUrl}/api/telephony/audio/hi_switch_immediate.wav</Play>
     </Gather>
     <Play>${publicUrl}/api/telephony/audio/hi_goodbye.wav</Play>
