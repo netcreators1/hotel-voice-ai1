@@ -172,12 +172,11 @@ export class VobizService {
       }
     }
 
-    const hints = "YES, NO, haan, ha, nahi, hindi, speak in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking";
-    const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
+    const hints = "YES, yes, haan, ha, haan ji, NO, no, nahi, hindi, speak in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking";
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="20">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="en-IN" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="20">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
@@ -272,12 +271,11 @@ export class VobizService {
 </Response>`;
     }
 
-    const hints = "YES, NO, haan, ha, nahi, hindi, speak in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking";
-    const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
+    const hints = "YES, yes, haan, ha, haan ji, NO, no, nahi, hindi, speak in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking";
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="20">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="en-IN" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="20">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
