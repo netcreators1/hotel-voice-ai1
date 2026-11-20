@@ -306,6 +306,8 @@ router.all("/vobiz/gather", async (req, res) => {
       req.query?.speech ||
       req.query?.SpeechResult ||
       req.query?.SpeechText ||
+      req.query?.Digits ||
+      req.query?.digits ||
       ""
     ).trim();
 
@@ -369,7 +371,7 @@ router.all("/vobiz/gather", async (req, res) => {
           ? "नमस्ते! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
           : "Are you looking for Reservation? Say YES, or for Hindi say HINDI.";
         const xml = await vobizService.generateConversationalXML(prompt, callId, false, null, lang, customerPhone, customerName, persona);
-        res.type("application/xml");
+        res.set("Content-Type", "text/xml");
         return res.send(xml.trim());
       } else {
         const isHindi = (lang || "").toLowerCase() === "hi";
@@ -377,7 +379,7 @@ router.all("/vobiz/gather", async (req, res) => {
           ? "विवांत रिट्रीट में कॉल करने के लिए धन्यवाद। आपका दिन शुभ हो!"
           : "Thank you for contacting Vivaant Retreat. Have a wonderful day ahead!";
         const xml = await vobizService.generateConversationalXML(prompt, callId, true, null, lang, customerPhone, customerName, persona);
-        res.type("application/xml");
+        res.set("Content-Type", "text/xml");
         return res.send(xml.trim());
       }
     }

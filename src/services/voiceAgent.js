@@ -312,8 +312,14 @@ export async function processConversationStep(messages, sessionContext = {}) {
     lastUserMsg.includes("hindee") ||
     lastUserMsg.includes("हिंदी") ||
     lastUserMsg.includes("हिन्दी") ||
+    lastUserMsg.includes("inde") ||
+    lastUserMsg.includes("handy") ||
+    lastUserMsg.includes("in the") ||
+    lastUserMsg.includes("in hindi") ||
     lastUserMsg.includes("talk in hindi") ||
     lastUserMsg.includes("speak in hindi") ||
+    lastUserMsg.includes("can we talk in hindi") ||
+    lastUserMsg.includes("can we speak in hindi") ||
     lastUserMsg.includes("speak hindi") ||
     lastUserMsg.includes("can you speak hindi") ||
     lastUserMsg.includes("do you speak hindi") ||
@@ -327,6 +333,12 @@ export async function processConversationStep(messages, sessionContext = {}) {
     lastUserMsg.includes("hindi batao") ||
     lastUserMsg.includes("hindi me baat") ||
     lastUserMsg.includes("hindi mein baat") ||
+    lastUserMsg.includes("boliye") ||
+    lastUserMsg.includes("bolo") ||
+    lastUserMsg.includes("batao") ||
+    lastUserMsg.includes("baat karo") ||
+    lastUserMsg.includes("baat kijiye") ||
+    lastUserMsg.includes("baat karein") ||
     lastUserMsg.includes("english nahi") ||
     lastUserMsg.includes("angrezi nahi") ||
     lastUserMsg.includes("angreji nahi") ||

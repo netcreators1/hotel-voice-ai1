@@ -174,7 +174,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" language="en-IN" bargeIn="true" hints="YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking" speechEndTimeout="2" executionTimeout="5">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" language="en-IN" bargeIn="true" hints="1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking" speechEndTimeout="2" timeout="5">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
@@ -222,11 +222,8 @@ export class VobizService {
         preRecordedClip = "en_goodbye.wav";
       }
     } else {
-      const isAvinash = (customerName || "").toLowerCase().includes("avinash") || (customerPhone || "").includes("9167584555");
-      if (lowerReply.includes("ji bilkul") || lowerReply.includes("जी बिल्कुल")) {
+      if (lowerReply.includes("ji bilkul") || lowerReply.includes("जी बिल्कुल") || lowerReply.includes("reservation") || lowerReply.includes("रिज़र्वेशन") || lowerReply.includes("karna chahte") || lowerReply.includes("चाहते हैं") || lowerReply.includes("boliye haan") || lowerReply.includes("हाँ कहें") || lowerReply.includes("se aayla") || lowerReply.includes("आयला")) {
         preRecordedClip = "hi_switch_immediate.wav";
-      } else if (lowerReply.includes("reservation") || lowerReply.includes("रिज़र्वेशन") || lowerReply.includes("karna chahte") || lowerReply.includes("चाहते हैं") || lowerReply.includes("boliye haan") || lowerReply.includes("हाँ कहें") || lowerReply.includes("se aayla") || lowerReply.includes("आयला")) {
-        preRecordedClip = isAvinash ? "hi_greeting_avinash.wav" : "hi_vivaant_greeting.wav";
       } else if (lowerReply.includes("sampark") || lowerReply.includes("jald hi") || (lowerReply.includes("dhanyavaad") && !lowerReply.includes("din shubh"))) {
         preRecordedClip = "hi_vivaant_yes_reply.wav";
       } else if (lowerReply.includes("dhanyavaad") && (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || isFinal)) {
@@ -258,7 +255,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" language="en-IN" bargeIn="true" hints="YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking" speechEndTimeout="2" executionTimeout="5">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" language="en-IN" bargeIn="true" hints="1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking" speechEndTimeout="2" timeout="5">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
