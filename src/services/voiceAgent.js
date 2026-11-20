@@ -885,6 +885,9 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg === "haanji" || 
     lastUserMsg === "haaji" || 
     lastUserMsg === "haji" || 
+    lastUserMsg === "ji" || 
+    lastUserMsg === "ji haan" || 
+    lastUserMsg === "ji ha" || 
     lastUserMsg === "हाँ" || 
     lastUserMsg === "हाँ जी" || 
     lastUserMsg === "हां" || 
@@ -893,10 +896,14 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg === "sure" || 
     lastUserMsg === "ok" || 
     lastUserMsg === "okay" || 
+    lastUserMsg === "hum" || 
+    lastUserMsg === "hmm" || 
+    lastUserMsg === "hun" || 
     lastUserMsg.startsWith("yes") || 
     lastUserMsg.startsWith("haan") ||
     lastUserMsg.startsWith("haa") ||
     lastUserMsg.startsWith("ha ") ||
+    lastUserMsg.startsWith("ji ") ||
     lastUserMsg.startsWith("हाँ") ||
     lastUserMsg.startsWith("हां") ||
     lastUserMsg.includes("yes") ||
@@ -904,6 +911,8 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg.includes("haa") ||
     lastUserMsg.includes("हाँ") ||
     lastUserMsg.includes("हां") ||
+    lastUserMsg.includes("ji haan") ||
+    lastUserMsg.includes("ji ha") ||
     lastUserMsg.includes("kanhaiya") ||
     lastUserMsg.includes("sure") ||
     lastUserMsg.includes("confirm") ||

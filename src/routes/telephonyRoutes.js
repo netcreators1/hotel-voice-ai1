@@ -412,13 +412,17 @@ router.all("/vobiz/gather", async (req, res) => {
 
     // Async background update to Firebase (non-blocking)
     if (callId) {
-      update(ref(db, `calls/${callId}`), {
+      const updates = {
         conversation_history: history,
         last_agent_reply: result.reply,
         persona: persona,
         language: lang,
         updated_at: Date.now()
-      }).catch(err => console.error("[Firebase Background Write Error]:", err.message));
+      };
+      if (result.leadStatus) updates.lead_status = result.leadStatus;
+      if (result.intent) updates.intent = result.intent;
+      if (result.score) updates.lead_score = result.score;
+      update(ref(db, `calls/${callId}`), updates).catch(err => console.error("[Firebase Background Write Error]:", err.message));
     }
   } catch (err) {
     console.error("[Vobiz Gather Error]:", err);
