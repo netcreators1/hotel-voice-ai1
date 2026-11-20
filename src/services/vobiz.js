@@ -227,7 +227,7 @@ export class VobizService {
                  (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || lowerReply.includes("शुभ हो") || isFinal)) {
         // Hindi NO / Goodbye
         preRecordedClip = "hi_goodbye.wav";
-      } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("kamre")) {
+      } else if (lowerReply.includes("डिस्काउंटेड") || lowerReply.includes("discounted") || lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("kamre")) {
         preRecordedClip = "hi_tariffs.wav";
       } else if (lowerReply.includes("bhej diya") || lowerReply.includes("link bhej")) {
         preRecordedClip = "hi_link_sent.wav";
@@ -247,7 +247,7 @@ export class VobizService {
       } else if (lowerReply.includes("say yes") || lowerReply.includes("reservation at vivaant") || lowerReply.includes("igatpuri") || lowerReply.includes("looking for reservation")) {
         // English greeting / triage prompt
         preRecordedClip = "vivaant_new_greeting.wav";
-      } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") ||
+      } else if (lowerReply.includes("discounted pricing") || lowerReply.includes("room rates") || lowerReply.includes("sales team") || lowerReply.includes("deluxe") || lowerReply.includes("3500") ||
                  lowerReply.includes("tariff") || lowerReply.includes("suite")) {
         preRecordedClip = "en_tariffs.wav";
       } else if (lowerReply.includes("sent the booking link") || lowerReply.includes("sent the direct booking link")) {

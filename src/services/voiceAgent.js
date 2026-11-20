@@ -786,26 +786,27 @@ ${JSON.stringify(hotel, null, 2)}`;
 
   const isTariffQuery = 
     lastUserMsg.includes("price") || 
+    lastUserMsg.includes("pricing") || 
     lastUserMsg.includes("tariff") || 
     lastUserMsg.includes("rate") || 
     lastUserMsg.includes("cost") || 
-    lastUserMsg.includes("room") || 
     lastUserMsg.includes("charge") ||
     lastUserMsg.includes("deluxe") ||
     lastUserMsg.includes("suite") ||
-    lastUserMsg.includes("stay") ||
-    lastUserMsg.includes("rent") ||
+    lastUserMsg.includes("rent") || 
     lastUserMsg.includes("how much") ||
     lastUserMsg.includes("kitna") ||
     lastUserMsg.includes("kiraya") ||
     lastUserMsg.includes("dam") ||
     lastUserMsg.includes("paisa") ||
+    lastUserMsg.includes("room rate") ||
+    lastUserMsg.includes("room rates") ||
+    lastUserMsg.includes("room price") ||
+    lastUserMsg.includes("room charge") ||
     lastUserMsg.includes("किराया") ||
     lastUserMsg.includes("रेट") ||
     lastUserMsg.includes("दाम") ||
     lastUserMsg.includes("प्राइस") ||
-    lastUserMsg.includes("रूम") ||
-    lastUserMsg.includes("कमरा") ||
     lastUserMsg.includes("चार्ज") ||
     lastUserMsg.includes("कितना") ||
     lastUserMsg.includes("डीलक्स") ||
@@ -957,6 +958,12 @@ ${JSON.stringify(hotel, null, 2)}`;
       : "Thank you very much. Have a wonderful day ahead!";
     isFinal = true;
     executeTool("log_guest_interest", { interest_level: "cold", intent: "Declined Reservation (Said NO / NAHI)" }, sessionContext).catch(() => {});
+  } else if (isTariffQuery || lastUserMsg.includes("offer") || lastUserMsg.includes("discount") || lastUserMsg.includes("deal") || lastUserMsg.includes("promo") || lastUserMsg.includes("package") || lastUserMsg.includes("छूट") || lastUserMsg.includes("ऑफर")) {
+    reply = isHindi
+      ? "हम आज रूम रेट्स पर डिस्काउंटेड प्राइसिंग ऑफर कर रहे हैं। यदि आप इंटरेस्टेड हैं, तो मैं अपनी सेल्स टीम से एक एक्सपर्ट को आपसे कनेक्ट करवा सकती हूँ।"
+      : "We are offering discounted pricing today on the room rates, if you are interested I can have an expert call you from our sales team.";
+    isFinal = false;
+    executeTool("log_guest_interest", { interest_level: "warm", intent: "Inquired room tariffs (Discounted Pricing Offer)" }, sessionContext).catch(() => {});
   } else if (wasPromptedSayYes) {
     if (isThankYou && userMsgCount > 2) {
       reply = isHindi
@@ -1075,35 +1082,11 @@ ${JSON.stringify(hotel, null, 2)}`;
       : `${hotel.hotel_name || "Vivaant Retreat"} is located in ${hotel.location || "Banjara Hills, Hyderabad"}, just 30 minutes from the airport. Our Deluxe rooms start at Rupees ${deluxeRate} plus taxes per night. Would you like me to send you the booking link?`;
     executeTool("log_guest_interest", { interest_level: "warm", intent: "Inquired hotel location" }, sessionContext).catch(() => {});
   } else if (isTariffQuery || lastUserMsg.includes("offer") || lastUserMsg.includes("discount") || lastUserMsg.includes("deal") || lastUserMsg.includes("promo") || lastUserMsg.includes("package") || lastUserMsg.includes("छूट") || lastUserMsg.includes("ऑफर")) {
-    if (activeCustomScript && (lastUserMsg.includes("offer") || lastUserMsg.includes("discount") || lastUserMsg.includes("deal") || lastUserMsg.includes("promo") || lastUserMsg.includes("package") || activeCustomScript.toLowerCase().includes("discount") || activeCustomScript.toLowerCase().includes("offer"))) {
-      reply = isHindi
-        ? `${activeCustomScript} Kya main aapke WhatsApp par direct booking link bhej doon?`
-        : `${activeCustomScript} Would you like me to send you the direct booking link?`;
-    } else if (lastUserMsg.includes("presidential") || lastUserMsg.includes("प्रेसिडेंशियल")) {
-      reply = isHindi
-        ? `Presidential Suite ${presRate} Rupees plus taxes hai. Kya booking link bhej doon?`
-        : `Our Presidential Suite is ${presRate} Rupees plus taxes per night. Shall I send the booking link?`;
-    } else if (lastUserMsg.includes("executive") || (lastUserMsg.includes("suite") && !lastUserMsg.includes("deluxe")) || lastUserMsg.includes("सूट")) {
-      reply = isHindi
-        ? `Executive Suite ${execRate} Rupees plus taxes hai breakfast ke saath. Kya booking link bhej doon?`
-        : `Our Executive Suite is ${execRate} Rupees plus taxes with breakfast. Shall I send the booking link?`;
-    } else if (lastUserMsg.includes("deluxe") || lastUserMsg.includes("डीलक्स")) {
-      reply = isHindi
-        ? `Deluxe room ${deluxeRate} Rupees plus taxes hai. Kya booking link bhej doon?`
-        : `Our Deluxe room is ${deluxeRate} Rupees plus taxes per night. Shall I send the booking link?`;
-    } else {
-      if (activeCustomScript && activeCustomScript.length > 15) {
-        reply = isHindi
-          ? `${activeCustomScript} Kya main aapke WhatsApp par booking link share kar doon?`
-          : `${activeCustomScript} Shall I send you the direct booking link on WhatsApp?`;
-      } else {
-        reply = isHindi
-          ? `Deluxe room ${deluxeRate} Rupees aur Executive Suite ${execRate} plus taxes hai. Kya booking link bhej doon?`
-          : `Deluxe room is ${deluxeRate} Rupees and Executive Suite is ${execRate} plus taxes. Shall I send the booking link?`;
-      }
-    }
-    toolCallsExecuted.push("check_room_availability");
-    executeTool("log_guest_interest", { interest_level: "warm", intent: "Inquired room tariffs" }, sessionContext).catch(() => {});
+    reply = isHindi
+      ? "हम आज रूम रेट्स पर डिस्काउंटेड प्राइसिंग ऑफर कर रहे हैं। यदि आप इंटरेस्टेड हैं, तो मैं अपनी सेल्स टीम से एक एक्सपर्ट को आपसे कनेक्ट करवा सकती हूँ।"
+      : "We are offering discounted pricing today on the room rates, if you are interested I can have an expert call you from our sales team.";
+    isFinal = false;
+    executeTool("log_guest_interest", { interest_level: "warm", intent: "Inquired room tariffs (Discounted Pricing Offer)" }, sessionContext).catch(() => {});
   } else if (isAmenities) {
     reply = isHindi
       ? `Hotel mein rooftop infinity pool, luxury spa, 24-hour dining aur complimentary Wi-Fi uplabdh hai. Deluxe room ${deluxeRate} Rupees se start hain. Kya main booking link bhej doon?`
