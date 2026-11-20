@@ -865,21 +865,33 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg === "yeah" || 
     lastUserMsg === "yep" || 
     lastUserMsg === "haan" || 
+    lastUserMsg === "haa" || 
     lastUserMsg === "ha" || 
     lastUserMsg === "haan ji" || 
+    lastUserMsg === "haa ji" || 
     lastUserMsg === "ha ji" || 
+    lastUserMsg === "haanji" || 
+    lastUserMsg === "haaji" || 
+    lastUserMsg === "haji" || 
     lastUserMsg === "हाँ" || 
     lastUserMsg === "हाँ जी" || 
+    lastUserMsg === "हां" || 
+    lastUserMsg === "हां जी" || 
     lastUserMsg === "yes please" || 
     lastUserMsg === "sure" || 
     lastUserMsg === "ok" || 
     lastUserMsg === "okay" || 
     lastUserMsg.startsWith("yes") || 
     lastUserMsg.startsWith("haan") ||
+    lastUserMsg.startsWith("haa") ||
+    lastUserMsg.startsWith("ha ") ||
     lastUserMsg.startsWith("हाँ") ||
+    lastUserMsg.startsWith("हां") ||
     lastUserMsg.includes("yes") ||
     lastUserMsg.includes("haan") ||
+    lastUserMsg.includes("haa") ||
     lastUserMsg.includes("हाँ") ||
+    lastUserMsg.includes("हां") ||
     lastUserMsg.includes("kanhaiya") ||
     lastUserMsg.includes("sure") ||
     lastUserMsg.includes("confirm") ||
