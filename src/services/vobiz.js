@@ -172,15 +172,16 @@ export class VobizService {
       }
     }
 
-    const hints = "hindi, hindi mein, speak in hindi, hindi boliye, haan, haa, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate";
+    const hints = "YES, yes, haan, haa, ha, NO, nahi, hindi, speak in hindi, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="25">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" numDigits="1" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
         ${audioTag}
     </Gather>
-    <Redirect method="POST">${xmlGatherAction}</Redirect>
+    <Play>${publicUrl}/api/telephony/audio/hi_switch_immediate.wav</Play>
+    <Hangup/>
 </Response>`;
   }
 
@@ -221,11 +222,11 @@ export class VobizService {
         // Hindi greeting / Hindi switch prompt
         preRecordedClip = "hi_switch_immediate.wav";
       } else if ((lowerReply.includes("dhanyavaad") || lowerReply.includes("धन्यवाद")) &&
-                 !lowerReply.includes("din shubh") && !lowerReply.includes("shubh ho")) {
+                 !lowerReply.includes("din shubh") && !lowerReply.includes("shubh ho") && !lowerReply.includes("शुभ हो")) {
         // Hindi YES Thank You
         preRecordedClip = "hi_vivaant_yes_reply.wav";
       } else if ((lowerReply.includes("dhanyavaad") || lowerReply.includes("धन्यवाद")) &&
-                 (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || isFinal)) {
+                 (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || lowerReply.includes("शुभ हो") || isFinal)) {
         // Hindi NO / Goodbye
         preRecordedClip = "hi_goodbye.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("kamre")) {
@@ -269,15 +270,16 @@ export class VobizService {
 </Response>`;
     }
 
-    const hints = "hindi, hindi mein, speak in hindi, hindi boliye, haan, haa, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate";
+    const hints = "YES, yes, haan, haa, ha, NO, nahi, hindi, speak in hindi, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="25">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" numDigits="1" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
         ${audioTag}
     </Gather>
-    <Redirect method="POST">${xmlGatherAction}</Redirect>
+    <Play>${publicUrl}/api/telephony/audio/hi_goodbye.wav</Play>
+    <Hangup/>
 </Response>`;
   }
 }
