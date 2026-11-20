@@ -214,25 +214,24 @@ export class VobizService {
     let audioTag = `<Speak voice="${voice}"${langAttr}>${formattedSpeech}</Speak>`;
     const lowerReply = formattedSpeech.toLowerCase();
 
+    // ---- Map reply text to the correct pre-recorded WAV clip ----
+    // Priority: exact phrase match → no fallback that could play wrong audio
     let preRecordedClip = null;
-    if (!isHindi) {
-      if (lowerReply.includes("shall get back to you") || lowerReply.includes("get back to you") || lowerReply.includes("thank you very much") || (lowerReply.includes("thank you") && isFinal)) {
-        preRecordedClip = "vivaant_new_yes_reply.wav";
-      } else if (lowerReply.includes("have a wonderful day ahead") && isFinal) {
-        preRecordedClip = "vivaant_new_no_reply.wav";
-      } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("tariffs") || lowerReply.includes("suite")) {
-        preRecordedClip = "en_tariffs.wav";
-      } else if (lowerReply.includes("sent the booking link") || lowerReply.includes("sent the direct booking link")) {
-        preRecordedClip = "en_link_sent.wav";
-      } else if (lowerReply.includes("wonderful day")) {
-        preRecordedClip = "en_goodbye.wav";
-      }
-    } else {
-      if (lowerReply.includes("ji bilkul") || lowerReply.includes("जी बिल्कुल") || lowerReply.includes("reservation") || lowerReply.includes("रिज़र्वेशन") || lowerReply.includes("karna chahte") || lowerReply.includes("चाहते हैं") || lowerReply.includes("boliye haan") || lowerReply.includes("हाँ कहें") || lowerReply.includes("se aayla") || lowerReply.includes("आयला")) {
+
+    if (isHindi) {
+      // Hindi replies
+      if (lowerReply.includes("ji bilkul") || lowerReply.includes("जी बिल्कुल") ||
+          lowerReply.includes("reservation") || lowerReply.includes("रिज़र्वेशन") ||
+          lowerReply.includes("haan kahein") || lowerReply.includes("हाँ कहें")) {
+        // Hindi greeting / Hindi switch prompt
         preRecordedClip = "hi_switch_immediate.wav";
-      } else if (lowerReply.includes("sampark") || lowerReply.includes("jald hi") || (lowerReply.includes("dhanyavaad") && !lowerReply.includes("din shubh"))) {
+      } else if ((lowerReply.includes("dhanyavaad") || lowerReply.includes("धन्यवाद")) &&
+                 !lowerReply.includes("din shubh") && !lowerReply.includes("shubh ho")) {
+        // Hindi YES Thank You
         preRecordedClip = "hi_vivaant_yes_reply.wav";
-      } else if (lowerReply.includes("dhanyavaad") && (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || isFinal)) {
+      } else if ((lowerReply.includes("dhanyavaad") || lowerReply.includes("धन्यवाद")) &&
+                 (lowerReply.includes("din shubh") || lowerReply.includes("shubh ho") || isFinal)) {
+        // Hindi NO / Goodbye
         preRecordedClip = "hi_goodbye.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") || lowerReply.includes("kamre")) {
         preRecordedClip = "hi_tariffs.wav";
@@ -241,12 +240,28 @@ export class VobizService {
       } else if (lowerReply.includes("swagat") || lowerReply.includes("sahayata")) {
         preRecordedClip = "hi_anything_else.wav";
       }
+      // If nothing matched in Hindi, leave preRecordedClip = null → use TTS <Speak>
+    } else {
+      // English replies
+      if (lowerReply.includes("shall get back to you") || lowerReply.includes("get back to you") ||
+          (lowerReply.includes("thank you very much") && isFinal)) {
+        // English YES Thank You
+        preRecordedClip = "vivaant_new_yes_reply.wav";
+      } else if ((lowerReply.includes("wonderful day") || lowerReply.includes("have a wonderful")) && isFinal) {
+        // English NO / Goodbye
+        preRecordedClip = "vivaant_new_no_reply.wav";
+      } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") ||
+                 lowerReply.includes("tariff") || lowerReply.includes("suite")) {
+        preRecordedClip = "en_tariffs.wav";
+      } else if (lowerReply.includes("sent the booking link") || lowerReply.includes("sent the direct booking link")) {
+        preRecordedClip = "en_link_sent.wav";
+      } else if (lowerReply.includes("wonderful day") || lowerReply.includes("goodbye")) {
+        preRecordedClip = "en_goodbye.wav";
+      }
+      // If nothing matched in English, leave preRecordedClip = null → use TTS <Speak>
     }
 
-    if (!preRecordedClip) {
-      preRecordedClip = "hi_switch_immediate.wav";
-    }
-
+    // Only override audioTag if the clip actually exists on disk
     if (preRecordedClip && fs.existsSync(path.resolve("public/audio", preRecordedClip))) {
       audioTag = `<Play>${publicUrl}/api/telephony/audio/${preRecordedClip}</Play>`;
     }

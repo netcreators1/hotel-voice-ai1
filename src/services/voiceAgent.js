@@ -943,28 +943,29 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg.includes("nah") ||
     lastUserMsg.includes("नहीं");
 
-  if (wasPromptedSayYes) {
-    if (isAffirmativeYes) {
-      reply = isHindi 
-        ? "Aapka bahut-bahut dhanyavaad, hamari team aapse jald hi sampark karegi."
-        : "Thank you very much and we shall get back to you.";
-      isFinal = true;
-      executeTool("log_guest_interest", { interest_level: "hot", intent: "Confirmed Reservation Interest (Said YES / HAAN)" }, sessionContext).catch(() => {});
-    } else if (isNegativeNo) {
-      reply = isHindi
-        ? "Bahut-bahut dhanyavaad aur aapka din shubh ho."
-        : "Thank you very much and we shall get back to you.";
-      isFinal = true;
-      executeTool("log_guest_interest", { interest_level: "cold", intent: "Declined Reservation (Said NO / NAHI)" }, sessionContext).catch(() => {});
-    } else if (isThankYou && userMsgCount > 2) {
+  // ALWAYS check YES/NO first — the greeting ALWAYS asks the customer to say YES/Haa
+  // This handles both when wasPromptedSayYes is true AND when activeCalls memory was cleared (Render restart)
+  if (isAffirmativeYes && !isBookingLinkRequest && !isTariffQuery && !isLanguageSwitchToHindi) {
+    reply = isHindi
+      ? "Aapka bahut-bahut dhanyavaad, hamari team aapse jald hi sampark karegi."
+      : "Thank you very much and we shall get back to you.";
+    isFinal = true;
+    executeTool("log_guest_interest", { interest_level: "hot", intent: "Confirmed Reservation Interest (Said YES / HAAN)" }, sessionContext).catch(() => {});
+  } else if (isNegativeNo && !isBookingLinkRequest && !isTariffQuery && !isLanguageSwitchToHindi) {
+    reply = isHindi
+      ? "Bahut-bahut dhanyavaad aur aapka din shubh ho."
+      : "Thank you very much. Have a wonderful day ahead!";
+    isFinal = true;
+    executeTool("log_guest_interest", { interest_level: "cold", intent: "Declined Reservation (Said NO / NAHI)" }, sessionContext).catch(() => {});
+  } else if (wasPromptedSayYes) {
+    if (isThankYou && userMsgCount > 2) {
       reply = isHindi
         ? "Bahut-bahut dhanyavaad aur aapka din shubh ho."
         : "Thank you very much and we shall get back to you.";
       isFinal = true;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
     } else {
-      // Step 2 & 3: Customer asked for Hindi, said "hello", "hindi mein boliye", or any utterance other than yes/no
-      // IMMEDIATELY play the Hindi Language Greeting (Step 3)!
+      // Customer said something unclear — play Hindi greeting
       reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
       isFinal = false;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
@@ -1160,11 +1161,11 @@ ${JSON.stringify(hotel, null, 2)}`;
   let leadIntent = "General Inquiry";
   let leadScore = 50;
 
-  if (wasPromptedSayYes && isAffirmativeYes) {
+  if (isAffirmativeYes && !isBookingLinkRequest && !isTariffQuery && !isLanguageSwitchToHindi) {
     leadStatus = "hot";
     leadIntent = "Confirmed Reservation Interest (Said YES / HAAN)";
     leadScore = 95;
-  } else if (wasPromptedSayYes && isNegativeNo) {
+  } else if (isNegativeNo && !isBookingLinkRequest && !isTariffQuery && !isLanguageSwitchToHindi) {
     leadStatus = "cold";
     leadIntent = "Declined Reservation (Said NO / NAHI)";
     leadScore = 20;
