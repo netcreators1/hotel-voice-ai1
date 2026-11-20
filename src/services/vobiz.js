@@ -177,7 +177,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" numDigits="1" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
         ${audioTag}
     </Gather>
     <Play>${publicUrl}/api/telephony/audio/hi_switch_immediate.wav</Play>
@@ -275,7 +275,7 @@ export class VobizService {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="dtmf speech" numDigits="1" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="command_and_search" language="${gatherLang}" hints="${hints}" speechEndTimeout="auto" executionTimeout="15">
         ${audioTag}
     </Gather>
     <Play>${publicUrl}/api/telephony/audio/hi_goodbye.wav</Play>
