@@ -151,11 +151,13 @@ export class VobizService {
     const voice = isHindi ? "Polly.Kajal" : (personaObj.voice || "Polly.Kajal");
     const langAttr = isHindi ? ' language="hi-IN"' : ' language="en-IN"';
 
-    // High-quality natural neural voice with instantaneous speech barge-in
-    let audioTag = `<Speak voice="${voice}"${langAttr}>${greetingText}</Speak>`;
+    // Ensure loud, clear pre-recorded audio is always played (Vobiz FreeSWITCH requires Play)
+    let audioTag = `<Play>${publicUrl}/api/telephony/audio/vivaant_new_greeting.wav</Play>`;
     if (!isHindi) {
-      const englishPrompt = "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri? Say YES, or for Hindi say HINDI.";
-      audioTag = `<Speak voice="${voice}"${langAttr}>${englishPrompt}</Speak>`;
+      const diskNewGreeting = path.resolve("public/audio", "vivaant_new_greeting.wav");
+      if (fs.existsSync(diskNewGreeting)) {
+        audioTag = `<Play>${publicUrl}/api/telephony/audio/vivaant_new_greeting.wav</Play>`;
+      }
     } else {
       const isAvinash = (guestName || "").toLowerCase().includes("avinash") || (customerPhone || "").includes("9167584555");
       const preRecordedGreeting = isAvinash ? "hi_greeting_avinash.wav" : "hi_vivaant_greeting.wav";
@@ -236,6 +238,10 @@ export class VobizService {
       } else if (lowerReply.includes("swagat") || lowerReply.includes("sahayata")) {
         preRecordedClip = "hi_anything_else.wav";
       }
+    }
+
+    if (!preRecordedClip) {
+      preRecordedClip = isHindi ? "hi_switch_immediate.wav" : "vivaant_new_greeting.wav";
     }
 
     if (preRecordedClip && fs.existsSync(path.resolve("public/audio", preRecordedClip))) {
