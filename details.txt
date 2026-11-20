@@ -29,3 +29,13 @@ API_ Telecalling_LIVE - sk_a0a19tls_ms9Cjnxf1JVqfRrtKdfTpd3C
 LOGIN DETAILS :
 admin/	wpdyns76 Full Rights: View CDR, Add & Approve Recharges/Credit Limits, Change Settings
 agent/	abc@1234 Read-Only / Operational: View CDR & Leads (Recharging/Approving credits is blocked)
+
+
+STEP 1: Once the call is picked, Aayla greets the customer in English over the call, checks with him if he is interested in the deal
+STEP 2: If the answer is YES or Haa, or even No or Nahi a thank you message is to be played and the information is recorded in the CDR. If its YES or Haa, then it should be recorded in the lead status as HOT Lead.
+STEP 3: If the customer says to speak in Hindi or uses the keyword Hindi, then Aayla responds back by repeating the Welcome message in Hindi language.
+STEP 4: If the customer says YES or NO, both of which are to be recorded in the CDR. If its YES, then its a HOT lead, if its a No, then its a COLD Lead.
+STEP 5: Post which the thank you message is to be played.
+STEP 6: If the customer says YES, Haa or NO, Nahi any of this, it has to be recorded in the CDR
+STEP 7: The response time for Aayla to respond back to any query or any question or to answer back should be less than 2 seconds.
+STEP 8: All the information spoken by the customer needs to be recorded into the CDR.

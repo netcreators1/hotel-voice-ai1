@@ -964,11 +964,17 @@ ${JSON.stringify(hotel, null, 2)}`;
         : "Thank you very much and we shall get back to you.";
       isFinal = true;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
-    } else {
-      // Customer said something unclear — play Hindi greeting
+    } else if (wantsHindi || isLanguageSwitchToHindi) {
       reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
       isFinal = false;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer requested Hindi language" }, sessionContext).catch(() => {});
+    } else {
+      // Customer said something unclear or audio check in current language
+      reply = isHindi
+        ? "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
+        : "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES";
+      isFinal = false;
+      executeTool("log_guest_interest", { interest_level: "warm", intent: isHindi ? "Customer requested Hindi language" : "General Inquiry" }, sessionContext).catch(() => {});
     }
   } else if (isLanguageSwitchToHindi || wantsHindi) {
     reply = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";

@@ -361,20 +361,23 @@ router.all("/vobiz/gather", async (req, res) => {
 
     const history = callData?.history || [];
 
-    // If silence or empty speech from Vobiz, re-prompt in Hindi without hanging up prematurely
+    // If silence or empty speech from Vobiz, re-prompt in the SAME language without forcibly switching to Hindi
     if (!userSpeech) {
       callData.silenceCount = (callData.silenceCount || 0) + 1;
       console.log(`[Vobiz] Silence or timeout on call ${callId}, silence count: ${callData.silenceCount}`);
+      const isHindi = (lang || "").toLowerCase() === "hi";
       if (callData.silenceCount < 2) {
-        const prompt = "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।";
-        lang = "hi";
-        if (callData) callData.language = "hi";
-        const xml = await vobizService.generateConversationalXML(prompt, callId, false, null, "hi", customerPhone, customerName, persona);
+        const prompt = isHindi
+          ? "जी बिल्कुल! क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
+          : "Are you looking for a reservation at Vivaant Retreat Igatpuri? If yes, then say YES.";
+        const xml = await vobizService.generateConversationalXML(prompt, callId, false, null, isHindi ? "hi" : "en", customerPhone, customerName, persona);
         res.set("Content-Type", "text/xml");
         return res.send(xml.trim());
       } else {
-        const prompt = "विवांत रिट्रीट में कॉल करने के लिए धन्यवाद। आपका दिन शुभ हो!";
-        const xml = await vobizService.generateConversationalXML(prompt, callId, true, null, "hi", customerPhone, customerName, persona);
+        const prompt = isHindi
+          ? "विवांत रिट्रीट में कॉल करने के लिए धन्यवाद। आपका दिन शुभ हो!"
+          : "Thank you for speaking with Vivaant Retreat. Have a wonderful day ahead!";
+        const xml = await vobizService.generateConversationalXML(prompt, callId, true, null, isHindi ? "hi" : "en", customerPhone, customerName, persona);
         res.set("Content-Type", "text/xml");
         return res.send(xml.trim());
       }
@@ -418,6 +421,7 @@ router.all("/vobiz/gather", async (req, res) => {
       if (result.leadStatus) updates.lead_status = result.leadStatus;
       if (result.intent) updates.intent = result.intent;
       if (result.score) updates.lead_score = result.score;
+      if (userSpeech) updates.last_speech = userSpeech;
       await update(ref(db, `calls/${callId}`), updates).catch(err => console.error("[Firebase Write Error]:", err.message));
     }
 

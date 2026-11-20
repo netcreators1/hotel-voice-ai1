@@ -172,12 +172,12 @@ export class VobizService {
       }
     }
 
-    const hints = "1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking";
+    const hints = "YES, NO, haan, ha, nahi, hindi, speak in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="30">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="20">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
@@ -245,6 +245,9 @@ export class VobizService {
           (lowerReply.includes("thank you very much") && isFinal)) {
         // English YES Thank You
         preRecordedClip = "vivaant_new_yes_reply.wav";
+      } else if (lowerReply.includes("say yes") || lowerReply.includes("reservation at vivaant") || lowerReply.includes("igatpuri") || lowerReply.includes("looking for reservation")) {
+        // English greeting / triage prompt
+        preRecordedClip = "vivaant_new_greeting.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") ||
                  lowerReply.includes("tariff") || lowerReply.includes("suite")) {
         preRecordedClip = "en_tariffs.wav";
@@ -269,12 +272,12 @@ export class VobizService {
 </Response>`;
     }
 
-    const hints = "1, 2, YES, yes, haan, ha, haan ji, NO, nahi, hindi, speak in hindi, can we talk in hindi, hindi mein, hindi boliye, hindi me bolo, hindi me boliye, reservation, Igatpuri, Vivaant, booking";
+    const hints = "YES, NO, haan, ha, nahi, hindi, speak in hindi, hindi mein, hindi boliye, reservation, Igatpuri, Vivaant, booking";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="30">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" speechModel="telephony" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="20">
         ${audioTag}
     </Gather>
     <Redirect method="POST">${xmlGatherAction}</Redirect>
