@@ -879,7 +879,19 @@ ${JSON.stringify(hotel, null, 2)}`;
     lastUserMsg.startsWith("हाँ") ||
     lastUserMsg.includes("yes") ||
     lastUserMsg.includes("haan") ||
-    lastUserMsg.includes("हाँ");
+    lastUserMsg.includes("हाँ") ||
+    lastUserMsg.includes("kanhaiya") ||
+    lastUserMsg.includes("sure") ||
+    lastUserMsg.includes("confirm") ||
+    lastUserMsg.includes("interested") ||
+    lastUserMsg.includes("correct") ||
+    lastUserMsg.includes("right") ||
+    lastUserMsg.includes("book") ||
+    lastUserMsg.includes("booking") ||
+    lastUserMsg.includes("karna hai") ||
+    lastUserMsg.includes("chahiye") ||
+    lastUserMsg.includes("bilkul") ||
+    lastUserMsg.includes("zaroor");
 
   const isNegativeNo =
     isExitStatement ||
@@ -923,14 +935,14 @@ ${JSON.stringify(hotel, null, 2)}`;
       executeTool("log_guest_interest", { interest_level: "warm", intent: "Customer acknowledged with thanks" }, sessionContext).catch(() => {});
     } else if (isAudioCheck || lastUserMsg.includes("repeat") || lastUserMsg.includes("fir se") || lastUserMsg.includes("kya bola") || lastUserMsg.includes("pardon") || lastUserMsg.includes("again") || lastUserMsg === "hello" || lastUserMsg.includes("hear me") || lastUserMsg.includes("aawaz") || lastUserMsg.includes("awaz") || lastUserMsg.includes("speaking")) {
       reply = isHindi
-        ? "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
-        : (activeCustomGreeting || "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES");
+        ? "नमस्ते! क्या आप विवांत रिट्रीट में रिज़र्वेशन करना चाहते हैं? कृपया हाँ या नहीं कहें।"
+        : "Are you looking for Reservation at Vivaant Retreat? Please say YES, or say NO, or say HINDI.";
       isFinal = false;
     } else if (userMsgCount <= 2) {
-      // Repeat the triage prompt if guest says something other than yes/no on the first try
+      // Repeat the crisp triage prompt if guest says something other than yes/no on the first try (never replay full 8s greeting)
       reply = isHindi
-        ? "नमस्ते! मैं विवांत रिट्रीट से आयला बात कर रही हूँ। क्या आप विवांत रिट्रीट इगतपुरी में रिज़र्वेशन करना चाहते हैं? यदि हाँ, तो हाँ कहें।"
-        : (activeCustomGreeting || "Namaste! I am Aayla from Vivaant Retreat. Are you looking for Reservation at Vivaant Retreat Igatpuri ? If Yes, then say YES");
+        ? "नमस्ते! क्या आप विवांत रिट्रीट में रिज़र्वेशन करना चाहते हैं? कृपया हाँ या नहीं कहें।"
+        : "Are you looking for Reservation at Vivaant Retreat? Please say YES, or say NO, or say HINDI.";
       isFinal = false;
     } else {
       // Do not disclose room rentals. Thank the customer and close courteously.
