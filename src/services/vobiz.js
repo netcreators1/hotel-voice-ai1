@@ -172,13 +172,15 @@ export class VobizService {
       }
     }
 
+    const hints = "hindi, hindi mein, speak in hindi, hindi boliye, haan, haa, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" speechEndTimeout="2" executionTimeout="10">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="25">
         ${audioTag}
     </Gather>
+    <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }
 
@@ -267,13 +269,15 @@ export class VobizService {
 </Response>`;
     }
 
+    const hints = "hindi, hindi mein, speak in hindi, hindi boliye, haan, haa, nahi, YES, NO, reservation, Igatpuri, Vivaant, booking, room rate";
     const gatherLang = isHindi ? 'hi-IN' : 'en-IN';
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" speechEndTimeout="2" executionTimeout="10">
+    <Gather action="${xmlGatherAction}" method="POST" inputType="speech" language="${gatherLang}" bargeIn="true" hints="${hints}" speechEndTimeout="2" executionTimeout="25">
         ${audioTag}
     </Gather>
+    <Redirect method="POST">${xmlGatherAction}</Redirect>
 </Response>`;
   }
 }
