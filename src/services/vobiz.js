@@ -242,14 +242,14 @@ export class VobizService {
       }
       // If nothing matched in Hindi, leave preRecordedClip = null → use TTS <Speak>
     } else {
-      // English replies
-      if (lowerReply.includes("shall get back to you") || lowerReply.includes("get back to you") ||
+      // English replies — check MORE SPECIFIC phrases first to avoid wrong match
+      if ((lowerReply.includes("wonderful day") || lowerReply.includes("have a wonderful")) && isFinal) {
+        // English NO / Goodbye — check BEFORE generic thank-you
+        preRecordedClip = "vivaant_new_no_reply.wav";
+      } else if (lowerReply.includes("shall get back to you") || lowerReply.includes("get back to you") ||
           (lowerReply.includes("thank you very much") && isFinal)) {
         // English YES Thank You
         preRecordedClip = "vivaant_new_yes_reply.wav";
-      } else if ((lowerReply.includes("wonderful day") || lowerReply.includes("have a wonderful")) && isFinal) {
-        // English NO / Goodbye
-        preRecordedClip = "vivaant_new_no_reply.wav";
       } else if (lowerReply.includes("deluxe") || lowerReply.includes("3500") ||
                  lowerReply.includes("tariff") || lowerReply.includes("suite")) {
         preRecordedClip = "en_tariffs.wav";
